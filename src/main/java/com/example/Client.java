@@ -7,18 +7,20 @@ public class Client {
     String nomeServer = "localhost";
     int portaServer = 6789;
     Socket miSocket;
-    BufferedReader tastiera;
     String strRicevutaDalServer;
     DataOutputStream outVersoServer;
     BufferedReader inDaServer;
 
     public Socket connetti(){
         try {
-            tastiera = new BufferedReader(new InputStreamReader(System.in));
+
             miSocket = new Socket(nomeServer,portaServer);
 
-            outVersoServer = new DataOutputStream(miSocket.getOutputStream());
-            inDaServer = new BufferedReader(new InputStreamReader(miSocket.getInputStream()));
+            Thread clientInputThread = new Thread(new clientInputThread(miSocket));
+            Thread clientOutputThread = new Thread(new clientOutputThread(miSocket));
+
+            clientInputThread.start();
+            clientOutputThread.start();
 
         } catch (UnknownHostException e) {
             // TODO: handle exception
@@ -43,4 +45,60 @@ public class Client {
         }
     }
     
+}
+
+class clientInputThread implements Runnable {
+    private Socket clientSocket;
+
+    public clientInputThread(Socket socket) {
+        this.clientSocket = socket;
+    }
+    
+    @Override
+    public void run(){
+
+        try (
+            BufferedReader inDaServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        ) {
+
+            try {
+                    
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class clientOutputThread implements Runnable {
+    private Socket clientSocket;
+
+    public clientOutputThread(Socket socket) {
+        this.clientSocket = socket;
+    }
+    
+    @Override
+    public void run(){
+
+        try (  
+            DataOutputStream outVersoServer = new DataOutputStream(clientSocket.getOutputStream());
+        ) {
+
+            try {
+                    
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -51,7 +51,7 @@ class ClientHandler implements Runnable {
                     
 
             } catch (Exception e) {
-                outVersoClient.writeBytes("Inserisci un numero valido"+"\n");
+                outVersoClient.writeBytes("ERRORE"+"\n");
             }
                 
             
