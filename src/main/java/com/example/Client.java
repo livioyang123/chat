@@ -12,11 +12,6 @@ public class Client {
     DataOutputStream outVersoServer;
     BufferedReader inDaServer;
 
-    String n1;
-    String op;
-    String n2;
-    
-
     public Socket connetti(){
         try {
             tastiera = new BufferedReader(new InputStreamReader(System.in));
