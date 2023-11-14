@@ -55,8 +55,8 @@ class ClientHandler implements Runnable {
             try {
                 //String typeMsg="msg"+msgType;
                 DataOutputStream outVersoClient = new DataOutputStream(receiverSocket.getOutputStream());
-                outVersoClient.writeBytes(senderName+"*"+msgType+"*"+receiverName+"*"+Message+"\n");
-                //*msg 1* nome_dest: messaggio
+                outVersoClient.writeBytes(msgType+"*"+senderName+"*"+receiverName+"*"+Message+"\n");
+                //msg 1* nome_dest: messaggio
 
             } catch (IOException e) {
                 // TODO: handle exception
@@ -81,8 +81,10 @@ class ClientHandler implements Runnable {
 
                 //String typeMsg="msg"+msgType;
                 DataOutputStream outVersoClient = new DataOutputStream(receiverSocket.getOutputStream());
-                outVersoClient.writeBytes("*"+msgType+"*"+clientList()+"\n");
-                //*msg 3*msg
+                String lista = clientList();
+                System.out.println(clientList());
+                outVersoClient.writeBytes(msgType+"*Benvenuto nella chat!*"+lista+"\n");
+                //msg 3*msg
                 
             } catch (IOException e) {
                 // TODO: handle exception
@@ -92,23 +94,23 @@ class ClientHandler implements Runnable {
     }
     //lista client
     public String clientList(){
-        if(clientList.isEmpty())return "nessun utente connesso";
         String msg = "";
         Boolean isFirst = true;
-        for(String clientName : clientList.keySet()){
+        for(String clientNames : clientList.keySet()){
             if(!isFirst) msg+="-"; // se non è il primo aggiungi - per differenziare i nomi
-            msg += clientName;
+            msg += clientNames;
             isFirst = false;
         }
         return msg;
     }
    //comandi che un client puo fare
     public String commands(){
-        String commands="scegli l'operazione da svolgere:"+"\n";
+        String commands = "msg 0*";
 
-        commands+="1 per inviare un messaggio privato"+"\n"
+        commands += "scegli l'operazione da svolgere:"+"\n"
+                + "1 per inviare un messaggio privato"+"\n"
                 + "2 per inviare un messaggio pubblico"+"\n"
-                + "3 per uscire dalla chat";
+                + "3 per uscire dalla chat*";
             
         return commands;
     }
@@ -137,10 +139,17 @@ class ClientHandler implements Runnable {
                 //verifica nome
                 do{
 
-                    outVersoClient.writeBytes("*insert name*inserisci il tuo nome"+"\n");
-                    clientName = inDaClient.readLine();
+                    outVersoClient.writeBytes("insert name*inserisci il tuo nome "+"\n");
+                    clientName = inDaClient.readLine().trim();
 
-                }while(verifyClientName(clientName));
+                }while(clientName.isEmpty()||verifyClientName(clientName));
+
+                addClient(clientName, clientSocket);
+                System.out.println(clientName+" si è collegato");
+                System.out.println(clientList.toString());
+
+
+
                 //invio lista client
                 sendClientList(clientName, "msg 3");
                 //invio comandi al client
@@ -160,7 +169,7 @@ class ClientHandler implements Runnable {
                                 do{ // verifica nome del destinatario
                                     outVersoClient.writeBytes("inserisci il nome del destinatario"+"\n");
                                     destinatario = inDaClient.readLine();
-                                }while(verifyClientName(destinatario));
+                                }while(!verifyClientName(destinatario));
 
                                 outVersoClient.writeBytes("inserisci il messaggio da inviare a "+destinatario+"\n");
                                 msg = inDaClient.readLine();
@@ -171,7 +180,7 @@ class ClientHandler implements Runnable {
 
                         case 2 : 
                                
-                                outVersoClient.writeBytes("inserisci il messaggio da inviare a "+"\n");
+                                outVersoClient.writeBytes("inserisci il messaggio da inviare  "+"\n");
                                 msg = inDaClient.readLine();
 
                                 sendMessage_pubblic(clientName,msg, "msg 2");
@@ -180,19 +189,19 @@ class ClientHandler implements Runnable {
 
                         case 3 : 
 
-                                outVersoClient.writeBytes("*bye*"+"\n");
+                                outVersoClient.writeBytes("bye*"+"\n");
                                 disconnessione(clientName);
                                 clientConnesso = false; //per uscire dal ciclo
                                 break;
 
-                        default : outVersoClient.writeBytes("scegli l'operazione corretta"+"\n");
+                        default : outVersoClient.writeBytes("ERRORE*scegli l'operazione corretta"+"\n");
                                  
                     }
                 }
                 
 
             } catch (NumberFormatException e) {
-                outVersoClient.writeBytes("ERRORE"+"\n");
+                outVersoClient.writeBytes("ERRORE*"+"\n");
             } 
                 
             
