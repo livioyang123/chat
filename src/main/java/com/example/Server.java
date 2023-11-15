@@ -156,10 +156,20 @@ class ClientHandler implements Runnable {
                 boolean clientConnesso = true;
                 String scelta = "";
                 while(clientConnesso){
-                    //invio comandi al client
-                    outVersoClient.writeBytes(commands()+"\n");
-                    scelta = inDaClient.readLine();
-                    int operazione = Integer.parseInt(scelta);
+                    int operazione;
+                    try {
+                        
+                        //invio comandi al client
+                        outVersoClient.writeBytes(commands()+"\n");
+                        scelta = inDaClient.readLine();
+                        operazione = Integer.parseInt(scelta);
+                    
+
+                    } catch (NumberFormatException e) {
+                        // se la scelta non è un numero
+                        operazione = 0;
+                    }
+
                     String destinatario;
                     String msg;
 
@@ -199,9 +209,9 @@ class ClientHandler implements Runnable {
                     }
                 }
                 
-
-            } catch (NumberFormatException e) {
-                outVersoClient.writeBytes("ERRORE*"+"\n");
+                //ArrayIndexOutOfBoundsException,NumberFormatException
+            } catch (ArrayIndexOutOfBoundsException e) {
+                outVersoClient.writeBytes("ERRORE*"+"inserisci un numero valido\n");
             } 
                 
             
