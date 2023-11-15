@@ -7,6 +7,10 @@ class clientInputThread implements Runnable {
     public String clientName;
     Thread clientOutputThread;
 
+    public clientInputThread(Socket socket,Thread clientOutputThread) {
+        this.clientSocket = socket;
+        this.clientOutputThread = clientOutputThread;
+    }
     public clientInputThread(Socket socket) {
         this.clientSocket = socket;
     }

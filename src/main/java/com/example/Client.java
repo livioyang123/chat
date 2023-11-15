@@ -18,8 +18,9 @@ public class Client {
             miSocket = new Socket(nomeServer,portaServer);
 
             Thread clientInputThread = new Thread(new clientInputThread(miSocket));
-            Thread clientOutputThread = new Thread(new clientOutputThread(miSocket));
-
+            Thread clientOutputThread = new Thread(new clientOutputThread(miSocket,clientInputThread));
+            clientInputThread(miSocket,clientOutputThread);
+            
             clientInputThread.start();
             clientOutputThread.start();
 
@@ -32,6 +33,9 @@ public class Client {
             System.exit(1);
         }
         return miSocket;
+    }
+
+    private void clientInputThread(Socket miSocket2, Thread clientOutputThread) {
     }
 
     public void comunica(){

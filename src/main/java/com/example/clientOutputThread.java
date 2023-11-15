@@ -5,13 +5,18 @@ import java.net.*;
 class clientOutputThread implements Runnable {
     private Socket clientSocket;
     public String clientName;
+    Thread clientInputThread;
     BufferedReader tastiera;
 
+    public clientOutputThread(Socket socket,Thread clientInputThread) {
+        this.clientSocket = socket;
+        this.clientInputThread = clientInputThread;
+        tastiera = new BufferedReader(new InputStreamReader(System.in));
+    }
     public clientOutputThread(Socket socket) {
         this.clientSocket = socket;
         tastiera = new BufferedReader(new InputStreamReader(System.in));
     }
-    
     @Override
     public void run(){
 
@@ -20,13 +25,7 @@ class clientOutputThread implements Runnable {
         ) {
 
             try {
-                //scrivi nome
-                clientName = tastiera.readLine();
 
-                // Invia il nome al server
-                outVersoServer.writeBytes(clientName + "\n");
-
-                // Attendi l'input dall'utente e invialo al server
                 String messaggioUtente;
                 while (true) {
                     messaggioUtente = tastiera.readLine();

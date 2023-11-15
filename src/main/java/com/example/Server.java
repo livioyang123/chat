@@ -53,7 +53,7 @@ class ClientHandler implements Runnable {
         Socket receiverSocket = clientList.get(receiverName);
         if(receiverSocket !=null){
             try {
-                //String typeMsg="msg"+msgType;
+ 
                 DataOutputStream outVersoClient = new DataOutputStream(receiverSocket.getOutputStream());
                 outVersoClient.writeBytes(msgType+"*"+senderName+"*"+receiverName+"*"+Message+"\n");
                 //msg 1* nome_dest: messaggio
