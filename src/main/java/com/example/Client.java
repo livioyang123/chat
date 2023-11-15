@@ -17,9 +17,10 @@ public class Client {
 
             miSocket = new Socket(nomeServer,portaServer);
 
-            Thread clientInputThread = new Thread(new clientInputThread(miSocket));
-            Thread clientOutputThread = new Thread(new clientOutputThread(miSocket,clientInputThread));
-            clientInputThread(miSocket,clientOutputThread);
+            clientInputThread clientInput = new clientInputThread(miSocket);
+            clientOutputThread clientOutput = new clientOutputThread(miSocket,clientInput);
+            Thread clientInputThread = new Thread(clientInput);
+            Thread clientOutputThread = new Thread(clientOutput);
             
             clientInputThread.start();
             clientOutputThread.start();
@@ -35,8 +36,7 @@ public class Client {
         return miSocket;
     }
 
-    private void clientInputThread(Socket miSocket2, Thread clientOutputThread) {
-    }
+   
 
     public void comunica(){
 
@@ -47,6 +47,18 @@ public class Client {
             System.out.println(e.getMessage());
             System.out.println("errore durante la connesione con il server!");
             System.exit(1);
+        }
+    }
+
+    public void chiudiConnessione() {
+
+        try {
+            if (miSocket != null && !miSocket.isClosed()) {
+                miSocket.close();
+                System.out.println("Connessione chiusa.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     

@@ -5,10 +5,10 @@ import java.net.*;
 class clientOutputThread implements Runnable {
     private Socket clientSocket;
     public String clientName;
-    Thread clientInputThread;
+    clientInputThread clientInputThread;
     BufferedReader tastiera;
 
-    public clientOutputThread(Socket socket,Thread clientInputThread) {
+    public clientOutputThread(Socket socket,clientInputThread clientInputThread) {
         this.clientSocket = socket;
         this.clientInputThread = clientInputThread;
         tastiera = new BufferedReader(new InputStreamReader(System.in));
@@ -27,12 +27,14 @@ class clientOutputThread implements Runnable {
             try {
 
                 String messaggioUtente;
-                while (true) {
+                
+                boolean connessione = true;
+                while (connessione) {
                     messaggioUtente = tastiera.readLine();
-                    outVersoServer.writeBytes(messaggioUtente + "\n");
+                    outVersoServer.writeBytes(messaggioUtente + "\n");  
                 }
 
-            } catch (Exception e) {
+            } catch (SocketException e) {
                 e.printStackTrace();
             }
                 

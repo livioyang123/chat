@@ -6,13 +6,19 @@ class clientInputThread implements Runnable {
     private Socket clientSocket;
     public String clientName;
     Thread clientOutputThread;
+    public boolean connesione;
 
     public clientInputThread(Socket socket,Thread clientOutputThread) {
         this.clientSocket = socket;
         this.clientOutputThread = clientOutputThread;
+        connesione = true;
     }
     public clientInputThread(Socket socket) {
         this.clientSocket = socket;
+        connesione = true;
+    }
+    public boolean getConnessione(){
+        return connesione;
     }
     public void chiudiConnessione() {
 
@@ -24,7 +30,7 @@ class clientInputThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-}
+    }
     @Override
     public void run(){
 
@@ -33,7 +39,7 @@ class clientInputThread implements Runnable {
         ) {
 
             try {
-                    boolean connesione = true;
+                    
                     
                     while(connesione){
 
@@ -43,7 +49,7 @@ class clientInputThread implements Runnable {
                         switch(serverMsg[0]){
 
                             case "msg 0":
-                                for(int i = 1;i<serverMsg.length;i++) System.out.println( serverMsg[i]);
+                                for(int i = 1;i<serverMsg.length;i++) System.out.println(serverMsg[i]);
                                 //comandi 
                                 break;
                             case "msg 1":
@@ -76,7 +82,7 @@ class clientInputThread implements Runnable {
                         }
                     }
 
-            } catch (Exception e) {
+            } catch (SocketException e) {
                 e.printStackTrace();
             }
                 
