@@ -107,9 +107,9 @@ class ClientHandler implements Runnable {
     public String commands(){
         String commands = "msg 0*";
 
-        commands += "scegli l'operazione da svolgere:"+"\n"
-                + "1 per inviare un messaggio privato"+"\n"
-                + "2 per inviare un messaggio pubblico"+"\n"
+        commands += "scegli l'operazione da svolgere:"+"*"
+                + "1 per inviare un messaggio privato"+"*"
+                + "2 per inviare un messaggio pubblico"+"*"
                 + "3 per uscire dalla chat*";
             
         return commands;
@@ -152,11 +152,11 @@ class ClientHandler implements Runnable {
 
                 //invio lista client
                 sendClientList(clientName, "msg 3");
-                //invio comandi al client
+                
                 boolean clientConnesso = true;
                 String scelta = "";
                 while(clientConnesso){
-
+                    //invio comandi al client
                     outVersoClient.writeBytes(commands()+"\n");
                     scelta = inDaClient.readLine();
                     int operazione = Integer.parseInt(scelta);
