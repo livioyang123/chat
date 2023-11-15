@@ -13,6 +13,9 @@ class clientInputThread implements Runnable {
         this.clientOutputThread = clientOutputThread;
         connesione = true;
     }
+    public void setConnssione(boolean connessione){
+        this.connesione = connessione;
+    }
     public clientInputThread(Socket socket) {
         this.clientSocket = socket;
         connesione = true;
@@ -24,6 +27,7 @@ class clientInputThread implements Runnable {
 
         try {
             if (clientSocket != null && !clientSocket.isClosed()) {
+                setConnssione(false);
                 clientSocket.close();
                 System.out.println("Connessione chiusa.");
             }
@@ -71,7 +75,6 @@ class clientInputThread implements Runnable {
                                 break;
                             case "bye":
                                 System.out.println("logout in corso ...");
-                                connesione = false;
                                 chiudiConnessione();
                                 break;
                             case "ERRORE":

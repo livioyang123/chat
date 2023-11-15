@@ -30,8 +30,14 @@ class clientOutputThread implements Runnable {
                 
                 boolean connessione = true;
                 while (connessione) {
-                    messaggioUtente = tastiera.readLine();
-                    outVersoServer.writeBytes(messaggioUtente + "\n");  
+                    if (!clientSocket.isClosed()) {
+                        connessione = false;
+                        break;
+                    }
+                    else{
+                        messaggioUtente = tastiera.readLine();
+                        outVersoServer.writeBytes(messaggioUtente + "\n");  
+                    }
                 }
 
             } catch (SocketException e) {
