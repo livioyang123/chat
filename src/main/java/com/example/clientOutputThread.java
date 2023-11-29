@@ -7,6 +7,7 @@ class clientOutputThread implements Runnable {
     public String clientName;
     clientInputThread clientInputThread;
     BufferedReader tastiera;
+    boolean connessione = true;
 
     public clientOutputThread(Socket socket,clientInputThread clientInputThread) {
         this.clientSocket = socket;
@@ -28,8 +29,9 @@ class clientOutputThread implements Runnable {
 
                 String messaggioUtente;
                 
-                boolean connessione = true;
+                
                 while (connessione) {
+
                     messaggioUtente = tastiera.readLine();
                     outVersoServer.writeBytes(messaggioUtente + "\n");  
                     
