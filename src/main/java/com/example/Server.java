@@ -83,7 +83,7 @@ class ClientHandler implements Runnable {
                 DataOutputStream outVersoClient = new DataOutputStream(receiverSocket.getOutputStream());
                 String lista = clientList();
                 System.out.println(clientList());
-                outVersoClient.writeBytes(msgType+"*Benvenuto nella chat!*"+lista+"\n");
+                outVersoClient.writeBytes(msgType+"*"+lista+"\n");
                 //msg 3*msg
                 
             } catch (IOException e) {
@@ -110,7 +110,8 @@ class ClientHandler implements Runnable {
         commands += "scegli l'operazione da svolgere:"+"*"
                 + "1 per inviare un messaggio privato"+"*"
                 + "2 per inviare un messaggio pubblico"+"*"
-                + "3 per uscire dalla chat*";
+                + "3 per esaminare elenco degli utenti*"
+                + "4 per uscire dalla chat*";
             
         return commands;
     }
@@ -146,11 +147,9 @@ class ClientHandler implements Runnable {
 
                 addClient(clientName, clientSocket);
                 System.out.println(clientName+" si è collegato");
-                System.out.println(clientList.toString());
-
-
 
                 //invio lista client
+                outVersoClient.writeBytes("Benvenuto nella chat!"+"\n");
                 sendClientList(clientName, "msg 3");
                 
                 boolean clientConnesso = true;
@@ -177,7 +176,7 @@ class ClientHandler implements Runnable {
                         case 1 : 
 
                                 do{ // verifica nome del destinatario
-                                    outVersoClient.writeBytes("inserisci il nome del destinatario"+"\n");
+                                    outVersoClient.writeBytes("inserisci il nome del destinatario"+"(scegli tra:"+clientList()+")"+"\n");
                                     destinatario = inDaClient.readLine();
                                 }while(!verifyClientName(destinatario));
 
@@ -197,7 +196,11 @@ class ClientHandler implements Runnable {
                                 
                                 break;
 
-                        case 3 : 
+                        case 3 :
+                                sendClientList(clientName, "msg 3");
+                                break;
+
+                        case 4 : 
 
                                 outVersoClient.writeBytes("bye*"+"\n");
                                 disconnessione(clientName);

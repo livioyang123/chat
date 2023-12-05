@@ -58,7 +58,7 @@ class clientInputThread implements Runnable {
                                 break;
                             case "msg 1":
                                 System.out.println("hai ricevuto un messaggio privato da "+serverMsg[1]+"!\n");
-                                System.out.println(serverMsg[1]+" : "+serverMsg[3]);
+                                System.out.println(serverMsg[1]+" : "+serverMsg[3]+"\n");
                                 //client mittente : msg
                                 break;
                             case "msg 2":
@@ -66,9 +66,8 @@ class clientInputThread implements Runnable {
                                 System.out.println(serverMsg[1]+" : "+serverMsg[3]+"\n");
                                 break;
                             case "msg 3":
-                                System.out.println(serverMsg[1]); //msg di benvenuto
                                 System.out.println("hai ricevuto l'elenco degli utenti :");
-                                System.out.println(serverMsg[2]); //lista client
+                                System.out.println(serverMsg[1]); //lista client
                                 break;
                             case "insert name":
                                 System.out.println(serverMsg[1]);
