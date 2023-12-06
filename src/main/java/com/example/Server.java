@@ -110,8 +110,7 @@ class ClientHandler implements Runnable {
         commands += "scegli l'operazione da svolgere:"+"*"
                 + "1 per inviare un messaggio privato"+"*"
                 + "2 per inviare un messaggio pubblico"+"*"
-                + "3 per esaminare elenco degli utenti*"
-                + "4 per uscire dalla chat*";
+                + "3 per uscire dalla chat*";
             
         return commands;
     }
@@ -196,11 +195,7 @@ class ClientHandler implements Runnable {
                                 
                                 break;
 
-                        case 3 :
-                                sendClientList(clientName, "msg 3");
-                                break;
-
-                        case 4 : 
+                        case 3 : 
 
                                 outVersoClient.writeBytes("bye*"+"\n");
                                 disconnessione(clientName);
